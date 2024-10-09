@@ -9,7 +9,10 @@ def generate_data(radius, num_points, noise_std):
     #returns num_points number of (x, y) arrays with a normal distribution + noise in shape of circle
     return np.vstack((x, y)).T
 
-
+"""
+finds mean, weight and covariance of each cluster
+Covariance: correlation
+"""
 # Function to initialize parameters
 def initialize_parameters(num_clusters, data):
     # data dimensions = #points arrays * #dimensions elements in each array
@@ -26,9 +29,12 @@ def initialize_parameters(num_clusters, data):
 
         #weight = array of num_clusters filled w ones / size
     weight = np.ones(num_clusters) / num_clusters
+   #returns variance 
     return mean, covariance, weight
 
-
+"""
+Calculates the probability of each data point belonging to a particular cluster based on cluster mean and variance.
+"""
 # E-step: Update responsibilities
 def expectation(data, mean, covariance, weight):
     #data = (x,y) of all data points
@@ -53,6 +59,9 @@ def expectation(data, mean, covariance, weight):
 
 
 # Maximization-step: Update parameters
+"""
+recalculates the parameters based on how likely each point is to belong to each cluster.
+"""
 def maximization(data, responsibilities):
     num_clusters = responsibilities.shape[1]
     num_points, num_dimensions = data.shape
@@ -73,6 +82,9 @@ def maximization(data, responsibilities):
 
 
 # MAIN EM algorithm implementation
+"""
+Iterates over E and M step until convergence (predetermined value) or threshold of iterations is reached (no convergence)
+"""
 def EM_algorithm(data, num_clusters, max_iterations=100, tolerance=1e-3):
 
     #initialize values
